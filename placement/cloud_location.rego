@@ -4,9 +4,9 @@ import input.tfplan as tfplan
 
 
 allowed_locations = {
-    "aws": ["us-east-1", "us-east-2"],
-    "azurerm": ["eastus", "eastus2"],
-    "google": ["us-central1-a", "us-central1-b", "us-west1-a"]
+    "registry.terraform.io/hashicorp/aws": ["us-east-1", "us-east-2"],
+    "registry.terraform.io/hashicorp/azurerm": ["eastus", "eastus2"],
+    "registry.terraform.io/hashicorp/google": ["us-central1-a", "us-central1-b", "us-west1-a"]
 }
 
 
@@ -24,16 +24,16 @@ eval_expression(plan, expr) = constant_value {
 }
 
 get_location(resource, plan) = aws_region {
-    "aws" == resource.provider_name
+    "registry.terraform.io/hashicorp/aws" == resource.provider_name
     provider := plan.configuration.provider_config[_]
     "aws" = provider.name
     region_expr := provider.expressions.region
     aws_region := eval_expression(plan, region_expr)
 } else = azure_location {
-    "azurerm" == resource.provider_name
+    "registry.terraform.io/hashicorp/azurerm" == resource.provider_name
     azure_location := resource.change.after.location
 } else = google_zone {
-    "google" == resource.provider_name
+    "registry.terraform.io/hashicorp/google" == resource.provider_name
     google_zone := resource.change.after.zone
 }
 

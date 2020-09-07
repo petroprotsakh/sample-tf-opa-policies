@@ -11,7 +11,7 @@ array_contains(arr, elem) {
 }
 
 get_tags(resource) = labels {
-    "google" == resource.provider_name
+    "registry.terraform.io/hashicorp/google" == resource.provider_name
     labels := resource.change.after.labels
 } else = tags {
     tags := resource.change.after.tags
